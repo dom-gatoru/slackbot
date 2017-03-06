@@ -1,1 +1,1 @@
-web: python3 run.py
+work: python3 run.py
