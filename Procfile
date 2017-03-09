@@ -1,2 +1,2 @@
-web: python3 run.py
+sbot: python3 run.py
 
