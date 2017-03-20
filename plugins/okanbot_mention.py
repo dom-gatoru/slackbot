@@ -1,5 +1,5 @@
 """
-plugin test
+Plugin Program
 """
 from slackbot.bot import respond_to
 from slackbot.bot import listen_to
@@ -10,6 +10,7 @@ from slackbot.bot import listen_to
 def gohan(message):
     """
     decoraterの引数にマッチするメッセージを受信すると
+    メッセージを返す
     """
     message.reply('ご飯作るかい？')
 
@@ -17,11 +18,12 @@ def gohan(message):
 @listen_to('諦める')
 def sendo(message):
     """
-    仙道さん！
+    仙道さん・・・！
     """
     message.send('まだ慌てるような時間じゃない。')
 
-@listen_to('いいか')
+@listen_to('頑張ろう')
+@listen_to('がんばった')
 def reaction(message):
     """
     いいね！
