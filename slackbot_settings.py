@@ -1,8 +1,8 @@
-"""This is a test program."""
+"""
+Configuration file for slackbot
+"""
 API_TOKEN = 'xoxb-149014797505-Z1LUJAnUOYTUuB44ekZxaLx5'
 
 DEFAULT_REPLY = '何言ってんの？'
 
-PLUGINS = [
-    'plugins',
-]
+PLUGINS = ['plugins']
