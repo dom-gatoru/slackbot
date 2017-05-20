@@ -17,9 +17,9 @@ def search_restraunt(message):
 
     if len(search_word) == 3:
         params = {
-            'keyid': key,
             'format': 'json',
             'address': search_word[1],
+            'keyid': key,
             'freeword': search_word[2]
         }
         try:
