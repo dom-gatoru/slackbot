@@ -9,8 +9,8 @@ from plugins.gnaviapi import GnaviApi
 def search_restraunt(message):
     """
     受信メッセージを元にぐるなびを検索してURLを返す。
-    場所：エリアMマスタ or 住所
-    キーワード：フリーワード
+    場所：エリアMマスタ(areacode_m) or 住所(address)
+    キーワード：フリーワード(freeword)
     """
     url = 'https://api.gnavi.co.jp/RestSearchAPI/20150630/'
     key = '18692ae7852ec7131e8cb8bed64e5519'
@@ -50,8 +50,8 @@ def search_restraunt(message):
 def search_restraunt_name(message):
     """
     受信メッセージを元にぐるなびを検索してURLを返す。
-    場所：エリアMマスタ or 住所
-    店名：
+    場所：エリアMマスタ(areacode_m) or 住所(address)
+    店名：店舗名(name)
     """
     url = 'https://api.gnavi.co.jp/RestSearchAPI/20150630/'
     key = '18692ae7852ec7131e8cb8bed64e5519'
