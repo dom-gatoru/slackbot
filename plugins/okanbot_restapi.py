@@ -31,7 +31,7 @@ def search_restraunt(message):
 
             params.update(search_area)
             gnavi.api_request(params)
-            print(gnavi.url_list())
+
             for rest_url in gnavi.url_list():
                 message.send(rest_url)
         except RequestException:
