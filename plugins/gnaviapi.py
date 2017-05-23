@@ -52,7 +52,7 @@ class GnaviApi(RestApi):
             garea.api_request(params)
             self.garea_s = garea.response_data.json()
             if 'error' in self.garea_s:
-                raise Exception('そのキーワードじゃ見つかんなかった・・・(´・ω・｀)')
+                raise Exception('その場所知らない・・・(´・ω・｀)')
         except RequestException:
             raise RequestException()
 
