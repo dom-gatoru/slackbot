@@ -13,6 +13,20 @@ class GnaviApi(RestApi):
         super().__init__(url, key)
         self.garea_s = None
 
+    def create_parasm(self, search_word):
+        """
+        Slackで入力されたキーワードにより、APIのパラメータを変える。
+        """
+        params = {
+            'format': 'json'
+        }
+
+        if search_word[0] == 'ご飯':
+            params.update({'freeword': search_word[2]})
+
+        elif search_word[0] == 'お店':
+            params.update({'name': search_word[2]})
+
     def url_list(self):
         """
         ResponseからレストランURLのリストを作って返す。
