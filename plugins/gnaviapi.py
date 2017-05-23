@@ -27,6 +27,8 @@ class GnaviApi(RestApi):
         elif search_word[0] == 'お店':
             params['name'] = search_word[2]
 
+        return params
+
     def url_list(self):
         """
         ResponseからレストランURLのリストを作って返す。
