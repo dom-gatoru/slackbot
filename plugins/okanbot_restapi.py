@@ -11,7 +11,7 @@ def search_restraunt(message):
     """
     受信メッセージを元にぐるなびを検索してURLを返す。
     場所：エリアMマスタコード(areacode_m) or 住所(address)
-    キーワード：フリーワード(freeword)
+    キーワード：フリーワード(freeword) or 店舗名(name)
     """
     url = 'https://api.gnavi.co.jp/RestSearchAPI/20150630/'
     key = '18692ae7852ec7131e8cb8bed64e5519'
