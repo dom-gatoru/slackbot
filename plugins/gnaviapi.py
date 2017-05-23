@@ -36,9 +36,11 @@ class GnaviApi(RestApi):
         json_data = self.response_data.json()
         if 'error' in json_data:
             raise Exception('そのキーワードじゃ見つかんなかった・・・(´・ω・｀)')
-        print((json_data['rest'])['url'])
 
-        return [rest_data['url'] for rest_data in json_data['rest']]
+        if json_data['total_hit_count'] == '1':
+            return [(json_data['rest'])['url']]
+        else:
+            return [rest_data['url'] for rest_data in json_data['rest']]
 
     def garea_middle_fech(self):
         """
