@@ -22,10 +22,10 @@ class GnaviApi(RestApi):
         }
 
         if search_word[0] == 'ご飯':
-            params.update({'freeword': search_word[2]})
+            params['freeword'] = search_word[2]
 
         elif search_word[0] == 'お店':
-            params.update({'name': search_word[2]})
+            params['name'] = search_word[2]
 
     def url_list(self):
         """
