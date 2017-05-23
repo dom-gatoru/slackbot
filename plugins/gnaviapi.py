@@ -13,7 +13,7 @@ class GnaviApi(RestApi):
         super().__init__(url, key)
         self.garea_s = None
 
-    def create_parasm(self, search_word):
+    def create_params(self, search_word):
         """
         Slackで入力されたキーワードにより、APIのパラメータを変える。
         """
