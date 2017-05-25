@@ -53,8 +53,8 @@ def search_weather(message):
     緯度経度を中心に元にスタティックマップAPIから雨雲レーダーの画像を返す。
     場所：住所(query)
     """
-    url_geocoder = 'https://map.yahooapis.jp/geocode/V1/geoCoder/'
-    url_staticmap = 'https://map.yahooapis.jp/map/V1/static/'
+    url_geocoder = 'https://map.yahooapis.jp/geocode/V1/geoCoder'
+    url_staticmap = 'https://map.yahooapis.jp/map/V1/static'
     key = 'dj0zaiZpPXJFMENYVGNCV1VtdCZzPWNvbnN1bWVyc2VjcmV0Jng9OTc-'
 
     geocoder_api = RestApi(url_geocoder)
@@ -70,7 +70,7 @@ def search_weather(message):
         }
         geocoder_api.api_request(geocoder_api_params)
 
-        if 'error' in geocoder_api.response_data.json():
+        if 'Error' in geocoder_api.response_data.json():
             raise Exception('その場所知らない・・・(´・ω・｀)')
         print(geocoder_api.response_data.json())
         coordinates = (((geocoder_api.response_data.json())[Feature])[Geometry])[Coordinates]
