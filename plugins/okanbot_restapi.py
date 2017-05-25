@@ -69,11 +69,11 @@ def search_weather(message):
             'output': 'json'
         }
         geocoder_api.api_request(geocoder_api_params)
-
-        if 'Error' in geocoder_api.response_data.json():
+        geocoder_json = geocoder_api.response_data.json()
+        if 'Error' in geocoder_json:
             raise Exception('その場所知らない・・・(´・ω・｀)')
-        print(geocoder_api.response_data.json()[Feature])
-        coordinates = (((geocoder_api.response_data.json())[Feature])[Geometry])[Coordinates]
+        coordinates = (((geocoder_json)['Feature'])['Geometry'])['Coordinates']
+
         staticmap_api_params = {
             'appid': key,
             'lat': (coordinates.split(','))[0],
