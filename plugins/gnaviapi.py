@@ -10,7 +10,8 @@ class GnaviApi(RestApi):
     ぐるなびAPI用クラス
     """
     def __init__(self, url, key):
-        super().__init__(url, key)
+        super().__init__(url)
+        self.key = key
         self.garea_s = None
 
     def create_params(self, search_word):
@@ -46,8 +47,9 @@ class GnaviApi(RestApi):
         """
         ぐるなびAPIからエリアMマスタを取得する。
         """
-        garea = RestApi('https://api.gnavi.co.jp/master/GAreaMiddleSearchAPI/20150630/', self.key)
+        garea = RestApi('https://api.gnavi.co.jp/master/GAreaMiddleSearchAPI/20150630/')
         params = {
+            'keyid': self.key,
             'format': 'json',
             'lang': 'ja'
         }

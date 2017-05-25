@@ -1,4 +1,6 @@
-"""JTS Study Meeting Slack Bot Program."""
+"""
+Slack Bot Program.
+"""
 # coding: utf-8
 
 from slackbot.bot import Bot

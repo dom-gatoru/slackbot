@@ -3,6 +3,7 @@ Plugin Program
 """
 from requests.exceptions import RequestException
 from slackbot.bot import listen_to
+from plugins.restapi import RestApi
 from plugins.gnaviapi import GnaviApi
 
 @listen_to('ご飯')
@@ -44,3 +45,44 @@ def search_restraunt(message):
         message.send('↓こんな感じで検索してほしい・・・(￣Д￣)ﾉ')
         message.send('ご飯　場所　キーワード（文字はスペース区切り）')
         message.send('例）ご飯　品川　焼き鳥')
+
+@listen_to('天気')
+def search_weather(message):
+    """
+    受信メッセージを元にジオコーダAPIから緯度経度を取得する。
+    緯度経度を中心に元にスタティックマップAPIから雨雲レーダーの画像を返す。
+    場所：住所(query)
+    """
+    url_geocoder = 'https://map.yahooapis.jp/geocode/V1/geoCoder/'
+    url_staticmap = 'https://map.yahooapis.jp/map/V1/static/'
+    key = 'dj0zaiZpPXJFMENYVGNCV1VtdCZzPWNvbnN1bWVyc2VjcmV0Jng9OTc-'
+
+    geocoder_api = RestApi(url_geocoder)
+    staticmap_api = RestApi(url_staticmap)
+
+    search_word = message.body['text'].split()
+
+    try:
+        geocoder_api_params = {
+            'appid': key,
+            'query': search_word[1],
+            'output': 'json'
+        }
+        geocoder_api.api_request(geocoder_api_params)
+
+        if 'error' in geocoder_api.response_data.json():
+            raise Exception('その場所知らない・・・(´・ω・｀)')
+
+        coordinates = (((geocoder_api.response_data.json())[Feature])[Geometry])[Coordinates]
+        staticmap_api_params = {
+            'appid': key,
+            'lat': (coordinates.split(','))[0],
+            'lon': (coordinates.split(','))[1],
+            'overlay': 'type:rainfall'
+        }
+        staticmap_api.api_request(staticmap_api_params)
+        message.send(staticmap_api.response_data)
+    except Exception as other:
+        message.send(''.join(other.args))
+        return
+
