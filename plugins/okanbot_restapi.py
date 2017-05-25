@@ -81,7 +81,7 @@ def search_weather(message):
             'overlay': 'type:rainfall'
         }
         staticmap_api.api_request(staticmap_api_params)
-        message.send(staticmap_api.response_data)
+        message.send(staticmap_api.response_data.apparent_encoding())
     except Exception as other:
         message.send(''.join(other.args))
         return
