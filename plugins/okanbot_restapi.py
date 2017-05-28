@@ -1,7 +1,7 @@
 """
 Plugin Program
 """
-from io import StringIO
+from io import BytesIO
 import requests
 from requests.exceptions import RequestException
 from PIL import Image
@@ -95,7 +95,7 @@ def search_weather(message):
         requests.post(
             url_slackapi, params=slackapi_params,
             files={
-                'file': Image.open(StringIO(staticmap_api.response_data.content.decode('utf-8')))
+                'file': Image.open(BytesIO(staticmap_api.response_data.content))
                 })
         print('requestは投げた')
         #message.send(staticmap_api.response_data.apparent_encoding())
