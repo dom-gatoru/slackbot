@@ -92,11 +92,7 @@ def search_weather(message):
             'token': key_slackbot,
             'channels': 'C5CJE5YBA'
         }
-        files_params = {
-            'file': pngfile
-        }
-        print('req直前')
-        requests.post(url_slackapi, params=slackapi_params, files=files_params)
+        requests.post(url_slackapi, data=slackapi_params, files={'file': pngfile})
     except Exception as other:
         message.send(''.join(other.args))
         return
