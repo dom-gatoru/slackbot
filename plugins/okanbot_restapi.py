@@ -87,8 +87,11 @@ def search_weather(message):
             'overlay': 'type:rainfall'
         }
         staticmap_api.api_request(staticmap_api_params)
+        print('staticmapの後')
         png_bytes = BytesIO(staticmap_api.response_data.content)
+        print('png_bytesの後')
         pngfile = Image.open(png_bytes)
+        print('pngfileの後')
         slackapi_params = {
             'token': key_slackbot,
             'channels': 'C5CJE5YBA'
