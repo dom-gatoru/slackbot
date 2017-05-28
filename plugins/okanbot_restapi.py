@@ -1,6 +1,7 @@
 """
 Plugin Program
 """
+import requests
 from requests.exceptions import RequestException
 from slackbot.bot import listen_to
 from plugins.restapi import RestApi
@@ -55,6 +56,7 @@ def search_weather(message):
     """
     url_geocoder = 'https://map.yahooapis.jp/geocode/V1/geoCoder'
     url_staticmap = 'https://map.yahooapis.jp/map/V1/static'
+    url_slackapi = 'https://slack.com/api/files.upload'
     key = 'dj0zaiZpPXJFMENYVGNCV1VtdCZzPWNvbnN1bWVyc2VjcmV0Jng9OTc-'
 
     geocoder_api = RestApi(url_geocoder)
@@ -81,7 +83,14 @@ def search_weather(message):
             'overlay': 'type:rainfall'
         }
         staticmap_api.api_request(staticmap_api_params)
-        message.send(staticmap_api.response_data.apparent_encoding())
+
+        slackapi_params = {
+            'token': 'xoxb-149014797505-Z1LUJAnUOYTUuB44ekZxaLx5',
+            'channels': 'C5CJE5YBA'
+        }
+        requests.post(
+            url_slackapi, params=slackapi_params, files={'file': staticmap_api.response_data})
+        #message.send(staticmap_api.response_data.apparent_encoding())
     except Exception as other:
         message.send(''.join(other.args))
         return
