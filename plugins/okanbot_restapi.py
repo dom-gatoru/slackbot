@@ -92,7 +92,7 @@ def search_weather(message):
             'token': key_slackbot,
             'channels': 'C5CJE5YBA'
         }
-        print(StringIO(staticmap_api.response_data.content))
+        print(staticmap_api.response_data.content)
         requests.post(
             url_slackapi, params=slackapi_params,
             files={'file': Image.open(StringIO(staticmap_api.response_data.content))})
