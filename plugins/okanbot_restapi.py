@@ -3,6 +3,8 @@ Plugin Program
 """
 import requests
 from requests.exceptions import RequestException
+from PIL import Image
+from StringIO import StringIO
 from slackbot.bot import listen_to
 from plugins.restapi import RestApi
 from plugins.gnaviapi import GnaviApi
@@ -89,7 +91,8 @@ def search_weather(message):
             'channels': 'C5CJE5YBA'
         }
         requests.post(
-            url_slackapi, params=slackapi_params, files={'file': staticmap_api.response_data})
+            url_slackapi, params=slackapi_params,
+            files={'file': Image.open(StringIO(staticmap_api.response_data.content))})
         #message.send(staticmap_api.response_data.apparent_encoding())
     except Exception as other:
         message.send(''.join(other.args))
