@@ -1,10 +1,10 @@
 """
 Plugin Program
 """
+from io import StringIO
 import requests
 from requests.exceptions import RequestException
 from PIL import Image
-from io import StringIO
 from slackbot.bot import listen_to
 from plugins.restapi import RestApi
 from plugins.gnaviapi import GnaviApi
