@@ -92,10 +92,11 @@ def search_weather(message):
             'token': key_slackbot,
             'channels': 'C5CJE5YBA'
         }
-        print(staticmap_api.response_data.content)
         requests.post(
             url_slackapi, params=slackapi_params,
-            files={'file': Image.open(StringIO(staticmap_api.response_data.content))})
+            files={
+                'file': Image.open(StringIO(staticmap_api.response_data.content.decode('utf-8')))
+                })
         print('requestは投げた')
         #message.send(staticmap_api.response_data.apparent_encoding())
     except Exception as other:
