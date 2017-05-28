@@ -84,7 +84,8 @@ def search_weather(message):
             'appid': key_yahoo,
             'lat': (coordinates.split(','))[0],
             'lon': (coordinates.split(','))[1],
-            'overlay': 'type:rainfall'
+            'overlay': 'type:rainfall',
+            'output': 'jpg'
         }
         staticmap_api.api_request(staticmap_api_params)
         pngfile = Image.open(BytesIO(staticmap_api.response_data.content))
@@ -93,7 +94,8 @@ def search_weather(message):
             'channels': 'C5CJE5YBA',
             'file': pngfile
         }
-        requests.post(url_slackapi, data=slackapi_params)
+        resp = requests.post(url_slackapi, data=slackapi_params)
+        print(resp.json())
     except Exception as other:
         message.send(''.join(other.args))
         return
