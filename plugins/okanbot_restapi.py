@@ -58,8 +58,10 @@ def search_weather(message):
     """
     url_geocoder = 'https://map.yahooapis.jp/geocode/V1/geoCoder'
     url_staticmap = 'https://map.yahooapis.jp/map/V1/static'
+    key_yahoo = 'dj0zaiZpPXJFMENYVGNCV1VtdCZzPWNvbnN1bWVyc2VjcmV0Jng9OTc-'
+
     url_slackapi = 'https://slack.com/api/files.upload'
-    key = 'dj0zaiZpPXJFMENYVGNCV1VtdCZzPWNvbnN1bWVyc2VjcmV0Jng9OTc-'
+    key_slackbot = 'xoxb-149014797505-Z1LUJAnUOYTUuB44ekZxaLx5'
 
     geocoder_api = RestApi(url_geocoder)
     staticmap_api = RestApi(url_staticmap)
@@ -68,7 +70,7 @@ def search_weather(message):
 
     try:
         geocoder_api_params = {
-            'appid': key,
+            'appid': key_yahoo,
             'query': search_word[1],
             'output': 'json'
         }
@@ -79,7 +81,7 @@ def search_weather(message):
         coordinates = (((geocoder_json['Feature'])[0])['Geometry'])['Coordinates']
 
         staticmap_api_params = {
-            'appid': key,
+            'appid': key_yahoo,
             'lat': (coordinates.split(','))[0],
             'lon': (coordinates.split(','))[1],
             'overlay': 'type:rainfall'
@@ -87,12 +89,14 @@ def search_weather(message):
         staticmap_api.api_request(staticmap_api_params)
 
         slackapi_params = {
-            'token': 'xoxb-149014797505-Z1LUJAnUOYTUuB44ekZxaLx5',
+            'token': key_slackbot,
             'channels': 'C5CJE5YBA'
         }
+        print(StringIO(staticmap_api.response_data.content))
         requests.post(
             url_slackapi, params=slackapi_params,
             files={'file': Image.open(StringIO(staticmap_api.response_data.content))})
+        print('requestは投げた')
         #message.send(staticmap_api.response_data.apparent_encoding())
     except Exception as other:
         message.send(''.join(other.args))
