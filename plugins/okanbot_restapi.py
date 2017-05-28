@@ -88,14 +88,13 @@ def search_weather(message):
             'output': 'jpg'
         }
         staticmap_api.api_request(staticmap_api_params)
-        pngfile = Image.open(BytesIO(staticmap_api.response_data.content))
+        pngfile = Image.open(BytesIO(staticmap_api.response_data.content), 'r')
         print(pngfile)
         slackapi_params = {
             'token': key_slackbot,
-            'channels': 'C5CJE5YBA',
-            'file': pngfile
+            'channels': 'C5CJE5YBA'
         }
-        resp = requests.post(url_slackapi, data=slackapi_params)
+        resp = requests.post(url_slackapi, data=slackapi_params, files={'file': pngfile})
         print(resp.json())
     except Exception as other:
         message.send(''.join(other.args))
