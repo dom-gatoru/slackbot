@@ -87,18 +87,12 @@ def search_weather(message):
             'overlay': 'type:rainfall'
         }
         staticmap_api.api_request(staticmap_api_params)
-
+        pngfile = Image.open(BytesIO(staticmap_api.response_data.content))
         slackapi_params = {
             'token': key_slackbot,
             'channels': 'C5CJE5YBA'
         }
-        requests.post(
-            url_slackapi, params=slackapi_params,
-            files={
-                'file': Image.open(BytesIO(staticmap_api.response_data.content))
-                })
-        print('requestは投げた')
-        #message.send(staticmap_api.response_data.apparent_encoding())
+        requests.post(url_slackapi, params=slackapi_params, files={'file': pngfile})
     except Exception as other:
         message.send(''.join(other.args))
         return
