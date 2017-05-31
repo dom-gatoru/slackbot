@@ -92,13 +92,13 @@ def search_weather(message):
         resp_obj = BytesIO()
         image_obj.save(resp_obj, format='jpg')
         resp_obj.seek(0, 0)
-        image_obj.seek(0, 0)
+
         slackapi_params = {
             'token': key_slackbot,
             'channels': 'C5CJE5YBA'
         }
 
-        resp = requests.post(url_slackapi, data=slackapi_params, files={'file': resp_obj})
+        resp = requests.post(url_slackapi, data=slackapi_params, files={'file': resp_obj.getbuffer()})
         print(resp.json())
     except Exception as other:
         message.send(''.join(other.args))
