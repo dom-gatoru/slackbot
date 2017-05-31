@@ -89,7 +89,7 @@ def search_weather(message):
         }
         staticmap_api.api_request(staticmap_api_params)
         pngfile = staticmap_api.response_data.content
-
+        print(pngfile)
         slackapi_params = {
             'token': key_slackbot,
             'channels': 'C5CJE5YBA'
