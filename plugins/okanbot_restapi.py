@@ -96,7 +96,7 @@ def search_weather(message):
         slackapi_params = {
             'token': key_slackbot,
             'channels': 'C5CJE5YBA',
-            'content': image_obj
+            'file': image_obj
         }
         print('手前')
         #resp = requests.post(url_slackapi, data=slackapi_params, files={'file': ('weather.jpg', image_obj, 'image/jpeg')})
