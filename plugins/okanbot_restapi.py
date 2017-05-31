@@ -97,7 +97,7 @@ def search_weather(message):
             'token': key_slackbot,
             'channels': 'C5CJE5YBA'
         }
-        print(resp_obj)
+
         resp = requests.post(url_slackapi, data=slackapi_params, files={'file': resp_obj.getvalue()})
         print(resp.json())
     except Exception as other:
