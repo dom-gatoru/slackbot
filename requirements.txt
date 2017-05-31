@@ -1,3 +1,2 @@
 slackbot==0.4.1
 Pillow==4.1.1
-slaker==2.2.1
