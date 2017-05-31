@@ -95,7 +95,7 @@ def search_weather(message):
         f = open('/tmp/weather.jpg')
         #resp_obj.seek(0)
         image_obj.seek(0)
-
+        print(f)
         slackapi_params = {
             'token': key_slackbot,
             'channels': 'C5CJE5YBA',
