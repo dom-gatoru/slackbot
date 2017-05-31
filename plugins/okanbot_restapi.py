@@ -88,7 +88,7 @@ def search_weather(message):
             'output': 'jpg'
         }
         staticmap_api.api_request(staticmap_api_params)
-        image_obj = Image.Open(BytesIO(staticmap_api.response_data.content), 'r')
+        image_obj = Image.open(BytesIO(staticmap_api.response_data.content), 'r')
         resp_obj = BytesIO()
         image_obj.save(resp_obj, format='jpg')
         resp_obj.seek(0, 0)
