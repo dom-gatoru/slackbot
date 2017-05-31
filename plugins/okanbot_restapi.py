@@ -1,7 +1,7 @@
 """
 Plugin Program
 """
-from io import StringIO
+from io import BytesIO
 import requests
 from requests.exceptions import RequestException
 from PIL import Image
@@ -88,14 +88,16 @@ def search_weather(message):
             'output': 'jpg'
         }
         staticmap_api.api_request(staticmap_api_params)
-        pngfile = StringIO(staticmap_api.response_data.content)
+        image_obj = Image.open(BytesIO(staticmap_api.response_data.content))
+        resp_obj = BytesIO()
+        image_obj.save(resp_obj, format='jpg')
 
         slackapi_params = {
             'token': key_slackbot,
             'channels': 'C5CJE5YBA'
         }
 
-        resp = requests.post(url_slackapi, data=slackapi_params, files={'file': pngfile})
+        resp = requests.post(url_slackapi, data=slackapi_params, files={'file': resp_obj})
         print(resp.json())
     except Exception as other:
         message.send(''.join(other.args))
