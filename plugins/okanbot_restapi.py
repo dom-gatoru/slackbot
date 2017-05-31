@@ -95,7 +95,7 @@ def search_weather(message):
             'channels': 'C5CJE5YBA'
         }
 
-        resp = requests.post(url_slackapi, data=slackapi_params, files={'file': pngfile})
+        resp = requests.post(url_slackapi, data=slackapi_params, files={'file': pngfile.getvalue()})
         print(resp.json())
     except Exception as other:
         message.send(''.join(other.args))
