@@ -6,6 +6,7 @@ import requests
 from requests.exceptions import RequestException
 from PIL import Image
 from slackbot.bot import listen_to
+from slacker import Slacker
 from plugins.restapi import RestApi
 from plugins.gnaviapi import GnaviApi
 
@@ -89,7 +90,7 @@ def search_weather(message):
         }
         staticmap_api.api_request(staticmap_api_params)
         pngfile = Image.open(BytesIO(staticmap_api.response_data.content), 'r')
-        print(pngfile)
+
         slackapi_params = {
             'token': key_slackbot,
             'channels': 'C5CJE5YBA'
