@@ -92,16 +92,14 @@ def search_weather(message):
         image_obj = Image.open(BytesIO(staticmap_api.response_data.content), 'r')
         #resp_obj = BytesIO()
         image_obj.save('/tmp/weather.jpg')
-        print('1')
-        f = open('/tmp/weather.jpg')
-        print('2')
+        fso = open('/tmp/weather.jpg', 'rb')
+        print(fso)
         #resp_obj.seek(0)
         #image_obj.seek(0)
-        print(f)
         slackapi_params = {
             'token': key_slackbot,
             'channels': 'C5CJE5YBA',
-            'file': f
+            'file': fso
         }
 
         #resp = requests.post(url_slackapi, data=slackapi_params, files={'file': ('/tmp/weather.jpg', image_obj, 'image/jpeg')})
