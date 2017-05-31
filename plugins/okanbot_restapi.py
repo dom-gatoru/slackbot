@@ -95,11 +95,12 @@ def search_weather(message):
         #image_obj.seek(0)
         slackapi_params = {
             'token': key_slackbot,
-            'channels': 'C5CJE5YBA'
+            'channels': 'C5CJE5YBA',
+            'file': '/tmp/weather.jpg'
         }
         print('手前')
-        resp = requests.post(url_slackapi, data=slackapi_params, files={'file': ('/tmp/weather.jpg', image_obj, 'image/jpeg')})
-        #requests.post(url_slackapi, data=slackapi_params)
+        #resp = requests.post(url_slackapi, data=slackapi_params, files={'file': ('/tmp/weather.jpg', image_obj, 'image/jpeg')})
+        requests.post(url_slackapi, data=slackapi_params)
         print(resp.json())
     except Exception as other:
         message.send(''.join(other.args))
