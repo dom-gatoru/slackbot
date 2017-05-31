@@ -1,7 +1,7 @@
 """
 Plugin Program
 """
-from io import BytesIO
+from io import StringIO
 import requests
 from requests.exceptions import RequestException
 from PIL import Image
