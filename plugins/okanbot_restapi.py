@@ -90,20 +90,16 @@ def search_weather(message):
         staticmap_api.api_request(staticmap_api_params)
 
         image_obj = Image.open(BytesIO(staticmap_api.response_data.content), 'r')
-        #resp_obj = BytesIO()
         image_obj.save('/tmp/weather.jpg')
         fso = open('/tmp/weather.jpg', 'rb')
-        print(fso)
-        fso.seek(0)
-        #resp_obj.seek(0)
-        #image_obj.seek(0)
+        #fso.seek(0)
         slackapi_params = {
             'token': key_slackbot,
             'channels': 'C5CJE5YBA'
         }
 
-        resp = requests.post(url_slackapi, data=slackapi_params, files={'file': ('weather.jpg', fso, 'image/jpeg')})
-        #resp = requests.post(url_slackapi, data=slackapi_params)
+        resp = requests.post(url_slackapi, data=slackapi_params, files={
+            'file': ('weather.jpg', fso, 'image/jpeg')})
         print(resp.json())
     except Exception as other:
         message.send(''.join(other.args))
