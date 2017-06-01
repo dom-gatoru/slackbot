@@ -82,10 +82,11 @@ def search_weather(message):
 
         staticmap_api_params = {
             'appid': key_yahoo,
-            'lat': (coordinates.split(','))[0],
-            'lon': (coordinates.split(','))[1],
+            'lon': (coordinates.split(','))[0],
+            'lat': (coordinates.split(','))[1],
             'overlay': 'type:rainfall',
-            'output': 'jpg'
+            'output': 'jpg',
+            'z': '13'
         }
         staticmap_api.api_request(staticmap_api_params)
         message.send(staticmap_api.response_data.url)
