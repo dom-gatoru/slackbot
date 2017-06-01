@@ -50,7 +50,7 @@ def search_restraunt(message):
         message.send('ご飯　場所　キーワード（文字はスペース区切り）')
         message.send('例）ご飯　品川　焼き鳥')
 
-@listen_to('天気')
+@listen_to('雨')
 def search_weather(message):
     """
     受信メッセージを元にジオコーダAPIから緯度経度を取得する。
@@ -98,9 +98,9 @@ def search_weather(message):
         image_obj = Image.open(BytesIO(staticmap_api.response_data.content), 'r')
         image_obj.save('/tmp/weather.jpg')
         with open('/tmp/weather.jpg', 'rb') as weatherfile:
-            resp = requests.post(url_slackapi, data=slackapi_params, files={
+            requests.post(url_slackapi, data=slackapi_params, files={
                 'file': ('weather.jpg', weatherfile, 'image/jpeg')})
-            print(resp.json())
+
     except Exception as other:
         message.send(''.join(other.args))
         return
