@@ -89,7 +89,7 @@ def search_weather(message):
             'z': '13'
         }
         staticmap_api.api_request(staticmap_api_params)
-        message.send(staticmap_api.response_data.url)
+
         image_obj = Image.open(BytesIO(staticmap_api.response_data.content), 'r')
         image_obj.save('/tmp/weather.jpg')
         fso = open('/tmp/weather.jpg', 'rb')
