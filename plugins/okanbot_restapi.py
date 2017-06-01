@@ -8,6 +8,7 @@ from PIL import Image
 from slackbot.bot import listen_to
 from plugins.restapi import RestApi
 from plugins.gnaviapi import GnaviApi
+import slackbot_settings
 
 @listen_to('ご飯')
 @listen_to('お店')
@@ -61,7 +62,6 @@ def search_weather(message):
     key_yahoo = 'dj0zaiZpPXJFMENYVGNCV1VtdCZzPWNvbnN1bWVyc2VjcmV0Jng9OTc-'
 
     url_slackapi = 'https://slack.com/api/files.upload'
-    key_slackbot = 'xoxb-149014797505-Z1LUJAnUOYTUuB44ekZxaLx5'
 
     geocoder_api = RestApi(url_geocoder)
     staticmap_api = RestApi(url_staticmap)
@@ -90,19 +90,17 @@ def search_weather(message):
         }
         staticmap_api.api_request(staticmap_api_params)
 
-        image_obj = Image.open(BytesIO(staticmap_api.response_data.content), 'r')
-        image_obj.save('/tmp/weather.jpg')
-        fso = open('/tmp/weather.jpg', 'rb')
-        #fso.seek(0)
         slackapi_params = {
-            'token': key_slackbot,
+            'token': slackbot_settings.API_TOKEN,
             'channels': 'C5CJE5YBA'
         }
 
-        resp = requests.post(url_slackapi, data=slackapi_params, files={
-            'file': ('weather.jpg', fso, 'image/jpeg')})
-        print(resp.json())
+        image_obj = Image.open(BytesIO(staticmap_api.response_data.content), 'r')
+        image_obj.save('/tmp/weather.jpg')
+        with open('/tmp/weather.jpg', 'rb') as weatherfile:
+            resp = requests.post(url_slackapi, data=slackapi_params, files={
+                'file': ('weather.jpg', weatherfile, 'image/jpeg')})
+            print(resp.json())
     except Exception as other:
         message.send(''.join(other.args))
         return
-
