@@ -130,7 +130,7 @@ def search_places(message):
             raise Exception('なんかキーワード足りない？(´・ω・｀)')
 
         places_api_params = {
-            'query': '+'.jo(search_word[1:]),
+            'query': '+'.join(search_word[1:]),
             'key': key_places
         }
 
