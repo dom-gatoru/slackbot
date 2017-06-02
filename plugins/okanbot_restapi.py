@@ -141,6 +141,9 @@ def search_places(message):
         places_api.api_request(places_api_params)
 
         places_json = places_api.response_data.json()
+
+        if places_json['status'] != 'OK':
+            raise Exception('なんか見つかんなかった(´・ω・｀)')
         staticmap_api_params = {
             'appid': key_yahoo,
             'lat': ((places_json['results'])[0])['geometry']['location']['lat'],
