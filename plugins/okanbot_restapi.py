@@ -81,6 +81,7 @@ def search_weather(message):
         geocoder_json = geocoder_api.response_data.json()
         if 'Error' in geocoder_json:
             raise Exception('その場所知らない・・・(´・ω・｀)')
+        print(geocoder_json)
         coordinates = (((geocoder_json['Feature'])[0])['Geometry'])['Coordinates']
 
         staticmap_api_params = {
