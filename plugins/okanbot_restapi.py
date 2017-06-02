@@ -108,3 +108,39 @@ def search_weather(message):
     except Exception as other:
         message.send(''.join(other.args))
         return
+
+@listen_to('世界地図')
+def search_places(message):
+    """
+    受信メッセージを元にGoogle Places APIから緯度経度を取得する。
+    緯度経度を中心に元にスタティックマップAPIから雨雲レーダーの画像を返す。
+    場所：住所(query)
+    """
+    url_places = 'https://maps.googleapis.com/maps/api/place/textsearch/json'
+    key_places = 'AIzaSyBPxh9zt6piucgIM9kk_mfZLDR_60AHKpo-'
+
+    #url_slackapi = 'https://slack.com/api/files.upload'
+
+    places_api = RestApi(url_places)
+
+    search_word = message.body['text'].split()
+
+    try:
+        if len(search_word) < 2:
+            raise Exception('なんかキーワード足りない？(´・ω・｀)')
+
+        places_api_params = {
+            'query': '+'.jo(search_word[1:]),
+            'key': key_places
+        }
+
+        places_api.api_request(places_api_params)
+
+        places_json = places_api.response_data.json()
+        if 'status' in places_json:
+            raise Exception('ダメっぽい・・・(´・ω・｀)')
+        print(places_json)
+
+    except Exception as other:
+        message.send(''.join(other.args))
+        return
