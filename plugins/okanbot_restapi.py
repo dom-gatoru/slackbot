@@ -119,7 +119,7 @@ def search_places(message):
     url_places = 'https://maps.googleapis.com/maps/api/place/textsearch/json'
     key_places = 'AIzaSyBPxh9zt6piucgIM9kk_mfZLDR_60AHKpo'
 
-    #url_slackapi = 'https://slack.com/api/files.upload'
+    url_slackapi = 'https://slack.com/api/files.upload'
 
     places_api = RestApi(url_places)
 
@@ -137,10 +137,25 @@ def search_places(message):
         places_api.api_request(places_api_params)
 
         places_json = places_api.response_data.json()
-        #if 'status' in places_json:
-        #    raise Exception('ダメっぽい・・・(´・ω・｀)')
-        print(places_json)
+        staticmap_api_params = {
+            'appid': key_yahoo,
+            'lat': ((places_json['results'])[0])['geometry']['location']['lat'],
+            'lon': ((places_json['results'])[0])['geometry']['location']['lng'],
+            'output': 'jpg',
+            'z': '13'
+        }
+        staticmap_api.api_request(staticmap_api_params)
 
+        slackapi_params = {
+            'token': slackbot_settings.API_TOKEN,
+            'channels': 'C5CJE5YBA'
+        }
+
+        image_obj = Image.open(BytesIO(staticmap_api.response_data.content), 'r')
+        image_obj.save('/tmp/worldmap.jpg')
+        with open('/tmp/worldmap.jpg', 'rb') as weatherfile:
+            requests.post(url_slackapi, data=slackapi_params, files={
+                'file': ('worldmap.jpg', weatherfile, 'image/jpeg')})
     except Exception as other:
         message.send(''.join(other.args))
         return
