@@ -119,9 +119,13 @@ def search_places(message):
     url_places = 'https://maps.googleapis.com/maps/api/place/textsearch/json'
     key_places = 'AIzaSyBPxh9zt6piucgIM9kk_mfZLDR_60AHKpo'
 
+    url_staticmap = 'https://map.yahooapis.jp/map/V1/static'
+    key_yahoo = 'dj0zaiZpPXJFMENYVGNCV1VtdCZzPWNvbnN1bWVyc2VjcmV0Jng9OTc-'
+
     url_slackapi = 'https://slack.com/api/files.upload'
 
     places_api = RestApi(url_places)
+    staticmap_api = RestApi(url_staticmap)
 
     search_word = message.body['text'].split()
 
