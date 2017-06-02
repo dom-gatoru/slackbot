@@ -69,7 +69,7 @@ def search_weather(message):
     search_word = message.body['text'].split()
 
     try:
-        if len(search_word) != 2:
+        if len(search_word) < 2:
             raise Exception('なんかキーワード足りない？(´・ω・｀)')
 
         geocoder_api_params = {
