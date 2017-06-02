@@ -133,12 +133,12 @@ def search_places(message):
             'query': '+'.join(search_word[1:]),
             'key': key_places
         }
-
+        print(places_api_params)
         places_api.api_request(places_api_params)
 
         places_json = places_api.response_data.json()
-        if 'status' in places_json:
-            raise Exception('ダメっぽい・・・(´・ω・｀)')
+        #if 'status' in places_json:
+        #    raise Exception('ダメっぽい・・・(´・ω・｀)')
         print(places_json)
 
     except Exception as other:
