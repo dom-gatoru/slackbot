@@ -117,7 +117,7 @@ def search_places(message):
     場所：住所(query)
     """
     url_places = 'https://maps.googleapis.com/maps/api/place/textsearch/json'
-    key_places = 'AIzaSyBPxh9zt6piucgIM9kk_mfZLDR_60AHKpo-'
+    key_places = 'AIzaSyBPxh9zt6piucgIM9kk_mfZLDR_60AHKpo'
 
     #url_slackapi = 'https://slack.com/api/files.upload'
 
