@@ -104,12 +104,6 @@ def search_weather(message):
             'file': ('weather.jpg', output.getvalue(), 'image/jpeg')
             })
 
-        #image_obj = Image.open(BytesIO(staticmap_api.response_data.content), 'r')
-        #image_obj.save('/tmp/weather.jpg')
-        #with open('/tmp/weather.jpg', 'rb') as weatherfile:
-        #    requests.post(slackbot_settings.API_URL, data=slackapi_params, files={
-        #        'file': ('weather.jpg', weatherfile, 'image/jpeg')})
-
     except Exception as other:
         message.send(''.join(other.args))
         return
