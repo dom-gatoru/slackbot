@@ -18,16 +18,20 @@ def search_restraunt(message):
     場所：エリアMマスタコード(areacode_m) or 住所(address)
     キーワード：フリーワード(freeword) or 店舗名(name)
     """
-    url = 'https://api.gnavi.co.jp/RestSearchAPI/20150630/'
-    key = '18692ae7852ec7131e8cb8bed64e5519'
-
-    gnavi = GnaviApi(url, key)
+    gnavi = GnaviApi(slackbot_settings.GNAVI_RESTSERACH_URL, slackbot_settings.GNAVI_API_TOKEN)
 
     search_word = message.body['text'].split()
 
     if len(search_word) >= 3:
         try:
-            params = gnavi.create_params(search_word)
+            params = {
+                'format': 'json'
+            }
+            if search_word[0] == 'ご飯':
+                params['freeword'] = search_word[2]
+
+            elif search_word[0] == 'お店':
+                params['name'] = search_word[2]
 
             gnavi.garea_middle_fech()
             search_area = gnavi.garea_middle_search(search_word[1])
@@ -57,14 +61,8 @@ def search_weather(message):
     緯度経度を中心に元にスタティックマップAPIから雨雲レーダーの画像を返す。
     場所：住所(query)
     """
-    url_geocoder = 'https://map.yahooapis.jp/geocode/V1/geoCoder'
-    url_staticmap = 'https://map.yahooapis.jp/map/V1/static'
-    key_yahoo = 'dj0zaiZpPXJFMENYVGNCV1VtdCZzPWNvbnN1bWVyc2VjcmV0Jng9OTc-'
-
-    url_slackapi = 'https://slack.com/api/files.upload'
-
-    geocoder_api = RestApi(url_geocoder)
-    staticmap_api = RestApi(url_staticmap)
+    geocoder_api = RestApi(slackbot_settings.YAHOO_GEOCODER_URL)
+    staticmap_api = RestApi(slackbot_settings.YAHOO_STATICMAP_URL)
 
     search_word = message.body['text'].split()
 
@@ -73,7 +71,7 @@ def search_weather(message):
             raise Exception('なんかキーワード足りない？(´・ω・｀)')
 
         geocoder_api_params = {
-            'appid': key_yahoo,
+            'appid': slackbot_settings.YAHOO_API_TOKEN,
             'query': search_word[1],
             'output': 'json'
         }
@@ -81,11 +79,11 @@ def search_weather(message):
         geocoder_json = geocoder_api.response_data.json()
         if 'Error' in geocoder_json:
             raise Exception('その場所知らない・・・(´・ω・｀)')
-        print(geocoder_json)
+
         coordinates = (((geocoder_json['Feature'])[0])['Geometry'])['Coordinates']
 
         staticmap_api_params = {
-            'appid': key_yahoo,
+            'appid': slackbot_settings.YAHOO_API_TOKEN,
             'lon': (coordinates.split(','))[0],
             'lat': (coordinates.split(','))[1],
             'overlay': 'type:rainfall',
@@ -99,11 +97,18 @@ def search_weather(message):
             'channels': 'C5CJE5YBA'
         }
 
+        output = BytesIO()
         image_obj = Image.open(BytesIO(staticmap_api.response_data.content), 'r')
-        image_obj.save('/tmp/weather.jpg')
-        with open('/tmp/weather.jpg', 'rb') as weatherfile:
-            requests.post(url_slackapi, data=slackapi_params, files={
-                'file': ('weather.jpg', weatherfile, 'image/jpeg')})
+        image_obj.save(output, 'jpeg')
+        requests.post(slackbot_settings.API_URL, data=slackapi_params, files={
+            'file': ('weather.jpg', output.getvalue(), 'image/jpeg')
+            })
+
+        #image_obj = Image.open(BytesIO(staticmap_api.response_data.content), 'r')
+        #image_obj.save('/tmp/weather.jpg')
+        #with open('/tmp/weather.jpg', 'rb') as weatherfile:
+        #    requests.post(slackbot_settings.API_URL, data=slackapi_params, files={
+        #        'file': ('weather.jpg', weatherfile, 'image/jpeg')})
 
     except Exception as other:
         message.send(''.join(other.args))
@@ -116,16 +121,8 @@ def search_places(message):
     緯度経度を中心に元にスタティックマップAPIから雨雲レーダーの画像を返す。
     場所：住所(query)
     """
-    url_places = 'https://maps.googleapis.com/maps/api/place/textsearch/json'
-    key_places = 'AIzaSyBPxh9zt6piucgIM9kk_mfZLDR_60AHKpo'
-
-    url_staticmap = 'https://map.yahooapis.jp/map/V1/static'
-    key_yahoo = 'dj0zaiZpPXJFMENYVGNCV1VtdCZzPWNvbnN1bWVyc2VjcmV0Jng9OTc-'
-
-    url_slackapi = 'https://slack.com/api/files.upload'
-
-    places_api = RestApi(url_places)
-    staticmap_api = RestApi(url_staticmap)
+    places_api = RestApi(slackbot_settings.GOOGLE_PLACES_URL)
+    staticmap_api = RestApi(slackbot_settings.YAHOO_STATICMAP_URL)
 
     search_word = message.body['text'].split()
 
@@ -135,17 +132,17 @@ def search_places(message):
 
         places_api_params = {
             'query': '+'.join(search_word[1:]),
-            'key': key_places
+            'key': slackbot_settings.GOOGLE_API_TOKEN
         }
-        print(places_api_params)
         places_api.api_request(places_api_params)
 
         places_json = places_api.response_data.json()
 
         if places_json['status'] != 'OK':
             raise Exception('なんか見つかんなかった(´・ω・｀)')
+
         staticmap_api_params = {
-            'appid': key_yahoo,
+            'appid': slackbot_settings.YAHOO_API_TOKEN,
             'lat': ((places_json['results'])[0])['geometry']['location']['lat'],
             'lon': ((places_json['results'])[0])['geometry']['location']['lng'],
             'output': 'jpg',
@@ -160,9 +157,11 @@ def search_places(message):
 
         image_obj = Image.open(BytesIO(staticmap_api.response_data.content), 'r')
         image_obj.save('/tmp/worldmap.jpg')
+
         with open('/tmp/worldmap.jpg', 'rb') as weatherfile:
-            requests.post(url_slackapi, data=slackapi_params, files={
+            requests.post(slackbot_settings.API_URL, data=slackapi_params, files={
                 'file': ('worldmap.jpg', weatherfile, 'image/jpeg')})
+
     except Exception as other:
         message.send(''.join(other.args))
         return
