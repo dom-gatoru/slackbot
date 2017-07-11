@@ -94,7 +94,7 @@ def search_weather(message):
 
         slackapi_params = {
             'token': slackbot_settings.API_TOKEN,
-            'channels': 'C5CJE5YBA'
+            'channels': slackbot_settings.SLACK_CHANNEL
         }
 
         output = BytesIO()
@@ -103,58 +103,6 @@ def search_weather(message):
         requests.post(slackbot_settings.API_URL, data=slackapi_params, files={
             'file': ('weather.jpg', output.getvalue(), 'image/jpeg')
             })
-
-    except Exception as other:
-        message.send(''.join(other.args))
-        return
-
-@listen_to('世界地図')
-def search_places(message):
-    """
-    受信メッセージを元にGoogle Places APIから緯度経度を取得する。
-    緯度経度を中心に元にスタティックマップAPIから雨雲レーダーの画像を返す。
-    場所：住所(query)
-    """
-    places_api = RestApi(slackbot_settings.GOOGLE_PLACES_URL)
-    staticmap_api = RestApi(slackbot_settings.YAHOO_STATICMAP_URL)
-
-    search_word = message.body['text'].split()
-
-    try:
-        if len(search_word) < 2:
-            raise Exception('なんかキーワード足りない？(´・ω・｀)')
-
-        places_api_params = {
-            'query': '+'.join(search_word[1:]),
-            'key': slackbot_settings.GOOGLE_API_TOKEN
-        }
-        places_api.api_request(places_api_params)
-
-        places_json = places_api.response_data.json()
-
-        if places_json['status'] != 'OK':
-            raise Exception('なんか見つかんなかった(´・ω・｀)')
-
-        staticmap_api_params = {
-            'appid': slackbot_settings.YAHOO_API_TOKEN,
-            'lat': ((places_json['results'])[0])['geometry']['location']['lat'],
-            'lon': ((places_json['results'])[0])['geometry']['location']['lng'],
-            'output': 'jpg',
-            'z': '13'
-        }
-        staticmap_api.api_request(staticmap_api_params)
-
-        slackapi_params = {
-            'token': slackbot_settings.API_TOKEN,
-            'channels': 'C5CJE5YBA'
-        }
-
-        image_obj = Image.open(BytesIO(staticmap_api.response_data.content), 'r')
-        image_obj.save('/tmp/worldmap.jpg')
-
-        with open('/tmp/worldmap.jpg', 'rb') as weatherfile:
-            requests.post(slackbot_settings.API_URL, data=slackapi_params, files={
-                'file': ('worldmap.jpg', weatherfile, 'image/jpeg')})
 
     except Exception as other:
         message.send(''.join(other.args))
