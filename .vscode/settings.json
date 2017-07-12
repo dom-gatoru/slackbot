@@ -1,9 +1,0 @@
-// 既定の設定とユーザー設定を上書きするには、このファイル内に設定を挿入します
-{
-    "python.pythonPath": "python3",
-    "python.linting.pylintArgs": [
-        "--rcfile", ".pylintrc"
-    ],
-    "workbench.colorTheme": "Visual Studio Dark"
-
-}
