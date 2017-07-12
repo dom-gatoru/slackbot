@@ -3,6 +3,9 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# .vscodeを除外
+.vscode
+
 # 「.DS_Store」や「._.DS_Store」を除外
 *.DS_Store
 
